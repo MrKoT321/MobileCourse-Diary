@@ -1,0 +1,85 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="10dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/itemBlock"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/recordTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="25dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="Как я пытался научить кота играть на гитаре"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/deleteBtn"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/delete"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/record_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:ellipsize="end"
+                android:maxLines="4"
+                android:text="Сегодня я решил, что мой кот Мурзик должен развиваться творчески. В интернете я наткнулся на видео, где коты играют на музыкальных инструментах, и это вдохновило меня. Я достал свою старую гитару, настроил ее и сел на пол, чтобы показать Мурзику, как это делается. Первое, что он сделал — это уткнулся в струны и начал их царапать. Я подумал, что это его способ сказать: «Давай, покажи мне, как!».
+
+Я начал играть простую мелодию, а Мурзик, похоже, решил, что это сигнал к началу охоты. Он запрыгнул на гитару и начал кататься по ней, словно это его личный батут. Я попытался удержать инструмент в руках, но вместо этого оказался в ситуации, когда гитара и кот стали одним целым. Мурзик издавал звуки, которые напоминали нечто среднее между мурчанием и жалобным мяуканьем.
+
+В итоге я сдался и просто стал играть фоновую музыку для его «выступления». Он крутился и прыгал вокруг меня, а я смеялась от души. Возможно, у нас не получилось создать музыкальный дуэт, но я точно знаю одно — Мурзик стал звездой нашего дома! Теперь я планирую записать наш «концерт» и поделиться им с друзьями. Пусть все увидят, как мой кот стал рок-звездой!"
+                android:textColor="@color/description_color"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/recordDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:ellipsize="end"
+                android:maxLines="4"
+                android:text="10.11.2024"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

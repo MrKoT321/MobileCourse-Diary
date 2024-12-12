@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="PinButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:width">90dp</item>
+        <item name="android:height">90dp</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+</resources>

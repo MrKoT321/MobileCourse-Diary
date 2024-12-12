@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.dictionary.LoginFragment"
+        android:label="LoginFragment"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_diaryEntriesFragment"
+            app:destination="@id/diaryEntriesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/diaryEntriesFragment"
+        android:name="com.example.dictionary.DiaryEntriesFragment"
+        android:label="DiaryEntriesFragment"
+        tools:layout="@layout/fragment_diary_entries">
+        <action
+            android:id="@+id/action_diaryEntriesFragment_to_recordFragment"
+            app:destination="@id/recordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recordFragment"
+        android:name="com.example.dictionary.RecordFragment"
+        android:label="RecordFragment"
+        tools:layout="@layout/fragment_record">
+        <action
+            android:id="@+id/action_recordFragment_to_diaryEntriesFragment"
+            app:destination="@id/diaryEntriesFragment" />
+    </fragment>
+</navigation>
