@@ -1,37 +1,59 @@
 package com.example.dictionary
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.dictionary.databinding.FragmentLoginBinding
 import kotlinx.coroutines.launch
 
+// TODO: Добаваить viewModel для логики приложения
 class LoginFragment : Fragment(R.layout.fragment_login) {
+
     private lateinit var binding: FragmentLoginBinding
-    private var password = ""
-    private var passwordToComplete = ""
+    private val viewModel: LoginViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentLoginBinding.bind(view)
 
         initButtonEvents()
+        initLifecycleScopes()
+    }
 
+    private fun initLifecycleScopes() {
         lifecycleScope.launch {
-            if (!StorageApp.passwordStorage.getPin().isNullOrEmpty())
-            {
-                binding.title.text = "Введите PIN-код"
+            viewModel.loginTitleText.collect {
+                binding.title.text = it
             }
-            passwordToComplete = StorageApp.passwordStorage.getPin() ?: ""
+        }
+        lifecycleScope.launch {
+            viewModel.password.collect { password ->
+                updatePasswordViewOnEnter(password)
+            }
+        }
+        lifecycleScope.launch {
+            viewModel.wasIncorrectPassword.collect {
+                if (it) {
+                    viewModel.wasIncorrectPassword.value = false
+                    showInvalidPasswordToast()
+                }
+            }
+        }
+        lifecycleScope.launch {
+            viewModel.completeLogin.collect {
+                if (it) {
+                    findNavController().navigate(R.id.action_loginFragment_to_diaryEntriesFragment)
+                }
+            }
         }
     }
 
-    private fun updatePasswordViewOnEnter() {
+    private fun updatePasswordViewOnEnter(password: String) {
         when (password.length) {
             1 -> {
                 Glide.with(this).load(R.drawable.circle_filled).into(binding.passwordIcon1)
@@ -47,7 +69,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
             4 -> {
                 Glide.with(this).load(R.drawable.circle_filled).into(binding.passwordIcon4)
-                checkPasswordOnComplete()
                 resetPasswordView()
             }
         }
@@ -59,7 +80,9 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             binding.passwordIcon2,
             binding.passwordIcon3,
             binding.passwordIcon4
-        ).forEach { Glide.with(this).load(R.drawable.circle_empty).into(it) }
+        ).forEach {
+            Glide.with(this).load(R.drawable.circle_empty).into(it)
+        }
     }
 
     private fun initButtonEvents() {
@@ -76,24 +99,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             binding.btn0,
         ).forEach { button ->
             button.setOnClickListener {
-                password += button.text.toString()
-                updatePasswordViewOnEnter()
-            }
-        }
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun checkPasswordOnComplete() {
-        if (passwordToComplete.isEmpty()) {
-            passwordToComplete = password.also { password = passwordToComplete }
-            binding.title.text = "Повторите PIN-код"
-        } else {
-            if (passwordToComplete == password) {
-                savePassword()
-                findNavController().navigate(R.id.action_loginFragment_to_diaryEntriesFragment)
-            } else {
-                password = ""
-                showInvalidPasswordToast()
+                viewModel.handle(LoginEvent.EnterEvent(button.text.toString()))
             }
         }
     }
@@ -104,11 +110,5 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             "Неверный PIN-код",
             Toast.LENGTH_SHORT
         ).show()
-    }
-
-    private fun savePassword() {
-        lifecycleScope.launch {
-            StorageApp.passwordStorage.savePin(password)
-        }
     }
 }

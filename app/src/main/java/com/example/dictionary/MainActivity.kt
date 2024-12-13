@@ -8,11 +8,18 @@ import com.example.dictionary.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
-    private val viewModel: DiaryViewModel by lazy {
+    private val diaryViewModel: DiaryViewModel by lazy {
         val factory = DiaryViewModelsFactory(StorageApp.db.recordDao())
         val provider = ViewModelProvider(owner = this, factory)
 
         provider[DiaryViewModel::class.java]
+    }
+
+    private val loginViewModel: LoginViewModel by lazy {
+        val factory = LoginViewModelsFactory(StorageApp.passwordStorage)
+        val provider = ViewModelProvider(owner = this, factory)
+
+        provider[LoginViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        println(viewModel)
+        println(diaryViewModel)
+        println(loginViewModel)
     }
 }

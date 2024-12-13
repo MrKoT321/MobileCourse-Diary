@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 
 class DiaryEntriesFragment : Fragment(R.layout.fragment_diary_entries) {
+
     private lateinit var binding: FragmentDiaryEntriesBinding
     private lateinit var adapter: DiaryEntriesAdapter
     var isFiltered = false
@@ -27,6 +28,31 @@ class DiaryEntriesFragment : Fragment(R.layout.fragment_diary_entries) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentDiaryEntriesBinding.bind(view)
 
+        initAvatarImage()
+        initRecyclerView()
+        initNavigationEvents()
+        initFilterEvent()
+
+        lifecycleScope.launch {
+            viewModel.records.collect { records ->
+                render(records.toMutableList())
+                adapter.updateData(records)
+            }
+        }
+    }
+
+    private fun render(records: MutableList<Record>) {
+        binding.emptyDiaryPage.isInvisible = records.isNotEmpty()
+        binding.recyclerView.isInvisible = records.isEmpty()
+        binding.dateFilter.isInvisible = records.isEmpty()
+        binding.createBtn.isInvisible = records.isEmpty()
+    }
+
+    private fun initAvatarImage() {
+        Glide.with(this).load(R.drawable.default_avatar_image).into(binding.avatar)
+    }
+
+    private fun initRecyclerView() {
         val itemClickCallback: (Record) -> Unit = {
             val arguments = Bundle().apply {
                 putString(ArgumentFields.UID.value, it.uid)
@@ -48,23 +74,6 @@ class DiaryEntriesFragment : Fragment(R.layout.fragment_diary_entries) {
             itemDeleteCallback
         )
         binding.recyclerView.adapter = adapter
-
-        initNavigationEvents()
-        initFilterEvent()
-
-        lifecycleScope.launch {
-            viewModel.records.collect { records ->
-                render(records.toMutableList())
-                adapter.updateData(records)
-            }
-        }
-    }
-
-    private fun render(records: MutableList<Record>) {
-        binding.emptyDiaryPage.isInvisible = records.isNotEmpty()
-        binding.recyclerView.isInvisible = records.isEmpty()
-        binding.dateFilter.isInvisible = records.isEmpty()
-        binding.createBtn.isInvisible = records.isEmpty()
     }
 
     private fun initNavigationEvents() {
